@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI SOC Analyst & SOAR Dashboard</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Background glow effects -->
+  <div class="glow-sphere glow-1"></div>
+  <div class="glow-sphere glow-2"></div>
+
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-logo">
+        <i class="fa-solid fa-shield-halved logo-icon"></i>
+        <div>
+          <h1>Aegis-AI</h1>
+          <p>Next-Gen AI SOC Analyst & SOAR Dashboard</p>
+        </div>
+      </div>
+      <div class="header-status">
+        <div class="status-badge" id="siem-status">
+          <span class="indicator online"></span>
+          <span>Wazuh SIEM: Online</span>
+        </div>
+        <div class="status-badge" id="ollama-status">
+          <span class="indicator online"></span>
+          <span>Ollama LLM: Ready</span>
+        </div>
+        <button class="settings-btn" id="toggle-settings-btn">
+          <i class="fa-solid fa-sliders"></i> Configurations
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Workspace Layout -->
+    <main class="dashboard-grid">
+      <!-- Sidebar Control Panel -->
+      <section class="grid-card control-panel">
+        <div class="card-header">
+          <h2><i class="fa-solid fa-gamepad icon-color"></i> Attack Simulator</h2>
+          <span class="badge">Local Labs</span>
+        </div>
+        
+        <div class="simulator-selector">
+          <label>Select Threat Profile</label>
+          <div class="threat-options">
+            <button class="threat-opt active" data-alert-type="1">
+              <span class="threat-num">01</span>
+              <div class="threat-info">
+                <h3>SSH Brute Force Attack</h3>
+                <p>Host: kali-agent | Attacker: 185.220.101.5</p>
+              </div>
+            </button>
+            <button class="threat-opt" data-alert-type="2">
+              <span class="threat-num">02</span>
+              <div class="threat-info">
+                <h3>SQL Injection Attempt</h3>
+                <p>Host: web-prod-01 | SQLi Payload</p>
+              </div>
+            </button>
+            <button class="threat-opt" data-alert-type="3">
+              <span class="threat-num">03</span>
+              <div class="threat-info">
+                <h3>Sudo Auth Privilege Abuse</h3>
+                <p>Host: kali-agent | Privilege Escalation</p>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <button class="action-btn" id="simulate-btn">
+          <i class="fa-solid fa-skull-crossbones"></i> Launch Threat Simulation
+        </button>
+
+        <!-- Configuration Panel (Slide down or Modal) -->
+        <div class="settings-panel hidden" id="settings-panel">
+          <div class="settings-header">
+            <h3><i class="fa-solid fa-gear"></i> Credentials & Endpoints</h3>
+          </div>
+          <div class="settings-form">
+            <div class="form-group">
+              <label>Ollama API URL</label>
+              <input type="text" id="cfg-ollama-url" value="http://localhost:11434">
+            </div>
+            <div class="form-group">
+              <label>Ollama Model</label>
+              <input type="text" id="cfg-ollama-model" value="llama3">
+            </div>
+            <div class="form-group">
+              <label>AbuseIPDB API Key</label>
+              <input type="password" id="cfg-abuseipdb-key" placeholder="Enter key for IP reputation checks">
+            </div>
+            <div class="form-group">
+              <label>Discord Webhook URL</label>
+              <input type="password" id="cfg-discord-webhook" placeholder="Enter webhook for chat alert logs">
+            </div>
+            <div class="form-group row-group">
+              <label for="cfg-active-response">Active Response Containment</label>
+              <label class="switch">
+                <input type="checkbox" id="cfg-active-response">
+                <span class="slider"></span>
+              </label>
+            </div>
+            <button class="save-btn" id="save-config-btn">Save Configurations</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Center Threat Network Visualizer -->
+      <section class="grid-card map-panel">
+        <div class="card-header">
+          <h2><i class="fa-solid fa-network-wired icon-color"></i> Attack Lifecycle Visualization</h2>
+          <span class="status-indicator" id="map-step-label">Idle</span>
+        </div>
+        
+        <div class="network-map">
+          <!-- Connector Lines -->
+          <svg class="map-connections">
+            <line id="line-attack" x1="12%" y1="50%" x2="35%" y2="50%"></line>
+            <line id="line-detect" x1="35%" y1="50%" x2="60%" y2="50%"></line>
+            <line id="line-analyze" x1="60%" y1="50%" x2="88%" y2="28%"></line>
+            <line id="line-respond" x1="60%" y1="50%" x2="88%" y2="72%"></line>
+          </svg>
+
+          <!-- Nodes -->
+          <div class="network-node" id="node-attacker" style="left: 5%; top: 40%;">
+            <div class="node-icon"><i class="fa-solid fa-user-secret"></i></div>
+            <span>Attacker</span>
+            <small id="node-attacker-ip">185.220.101.5</small>
+          </div>
+
+          <div class="network-node" id="node-target" style="left: 30%; top: 40%;">
+            <div class="node-icon"><i class="fa-solid fa-server"></i></div>
+            <span>Target Host</span>
+            <small id="node-target-name">kali-agent</small>
+          </div>
+
+          <div class="network-node" id="node-siem" style="left: 55%; top: 40%;">
+            <div class="node-icon"><i class="fa-solid fa-shield-halved"></i></div>
+            <span>Wazuh SIEM</span>
+            <small>Log Analytics</small>
+          </div>
+
+          <div class="network-node" id="node-ai" style="left: 82%; top: 15%;">
+            <div class="node-icon"><i class="fa-solid fa-brain"></i></div>
+            <span>AI Analyst</span>
+            <small>Ollama Llama3</small>
+          </div>
+
+          <div class="network-node" id="node-firewall" style="left: 82%; top: 60%;">
+            <div class="node-icon"><i class="fa-solid fa-lock"></i></div>
+            <span>SOAR Actions</span>
+            <small>Active Response</small>
+          </div>
+        </div>
+        
+        <!-- Live status timeline overlay -->
+        <div class="alert-banner hidden" id="containment-alert">
+          <div class="alert-content">
+            <i class="fa-solid fa-circle-check"></i>
+            <div>
+              <h4>Threat Blocked Successfully</h4>
+              <p id="containment-msg">Active response applied rule to firewall tables.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right Analyst Console / Output -->
+      <section class="grid-card console-panel">
+        <div class="card-header">
+          <h2><i class="fa-solid fa-terminal icon-color"></i> Analyst Integration Console</h2>
+          <div class="console-actions">
+            <button id="clear-console-btn"><i class="fa-solid fa-trash-can"></i></button>
+          </div>
+        </div>
+        <div class="console-wrapper">
+          <div class="console-output" id="console-logs">
+            <p class="console-info">> Aegis-AI Shell Initialized. Ready for simulation inputs.</p>
+            <p class="console-info">> Local configs loaded successfully.</p>
+          </div>
+        </div>
+
+        <div class="triage-result hidden" id="triage-result">
+          <div class="triage-header">
+            <h3>🤖 Triage Report</h3>
+            <span class="verdict-tag" id="verdict-tag">True Positive</span>
+          </div>
+          <div class="triage-body">
+            <div class="report-section">
+              <h4>Intel Enrichment</h4>
+              <p id="report-intel">AbuseIPDB Score: 100% | Country: US</p>
+            </div>
+            <div class="report-section">
+              <h4>AI Report</h4>
+              <div class="markdown-body" id="report-ai-markdown">
+                Report detail markdown goes here...
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
