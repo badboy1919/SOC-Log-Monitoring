@@ -283,8 +283,8 @@ def main():
     
     with socketserver.TCPServer(("", PORT), handler) as httpd:
         print(f"==================================================")
-        print(f"🚀 AI SOC Analyst Dashboard running at:")
-        print(f"👉 http://localhost:{PORT}")
+        print(f"AI SOC Analyst Dashboard running at:")
+        print(f"http://localhost:{PORT}")
         print(f"==================================================")
         try:
             httpd.serve_forever()
