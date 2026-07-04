@@ -1,0 +1,12 @@
+# Configurations
+config.json
+
+# Python local artifacts
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Log files
+*.log
+temp_mock_alert.json

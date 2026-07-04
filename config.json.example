@@ -1,0 +1,7 @@
+{
+  "OLLAMA_URL": "http://localhost:11434",
+  "OLLAMA_MODEL": "llama3",
+  "DISCORD_WEBHOOK": "",
+  "ABUSEIPDB_API_KEY": "",
+  "VIRUSTOTAL_API_KEY": ""
+}
